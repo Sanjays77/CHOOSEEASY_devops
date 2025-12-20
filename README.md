@@ -19,5 +19,9 @@ This project demonstrates version control using Git and GitHub. It includes a se
 - NodeJS Server
 - REST API integration
 
+## Testing
+- Unit testing with Jest
+- Integration testing
+
 ## Author
 Sanjays77
