@@ -1,0 +1,176 @@
+[
+  {
+    "_id": "1",
+    "title": "Software Developer",
+    "category": "Technology",
+    "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions.",
+    "averageSalary": "$127,260",
+    "jobGrowth": "+22% (Much faster than average)",
+    "bright_outlook": true,
+    "responsibilities": [
+      "Analyze user needs and software requirements to determine feasibility of design.",
+      "Modify existing software to correct errors, allow it to be adapted to new hardware, or to improve its performance.",
+      "Develop and direct software system testing and validation procedures, programming, and documentation."
+    ],
+    "skills": {
+      "technical": ["Java", "Python", "SQL", "React", "Node.js"],
+      "soft": ["Problem Solving", "Communication", "Teamwork"]
+    },
+    "educationPathway": {
+      "degree": "Bachelor's Degree in Computer Science",
+      "certifications": ["AWS Certified Developer", "Oracle Certified Professional"]
+    },
+    "difficulty": "High",
+    "demandLevel": "Very High",
+    "educationRequired": "Bachelor's Degree",
+    "futureScope": {
+      "demandTrend": "Rapidly Growing",
+      "techChanges": "High impact from AI"
+    }
+  },
+  {
+    "_id": "2",
+    "title": "Registered Nurse",
+    "category": "Healthcare",
+    "description": "Assess patient health problems and needs, develop and implement nursing care plans, and maintain medical records.",
+    "averageSalary": "$81,220",
+    "jobGrowth": "+6% (Faster than average)",
+    "bright_outlook": true,
+    "responsibilities": [
+      "Monitor, record, and report symptoms or changes in patients' conditions.",
+      "Maintain accurate, detailed reports and records.",
+      "Record patients' medical information and vital signs."
+    ],
+    "skills": {
+      "technical": ["Patient Care", "Medical Software", "CPR"],
+      "soft": ["Empathy", "Critical Thinking", "Stamina"]
+    },
+    "educationPathway": {
+      "degree": "Bachelor of Science in Nursing (BSN)",
+      "certifications": ["NCLEX-RN", "BLS"]
+    },
+    "difficulty": "High",
+    "demandLevel": "High",
+    "educationRequired": "Bachelor's Degree",
+    "futureScope": {
+      "demandTrend": "Steady Growth",
+      "techChanges": "Moderate"
+    }
+  },
+  {
+    "_id": "3",
+    "title": "Data Scientist",
+    "category": "Technology",
+    "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information.",
+    "averageSalary": "$103,500",
+    "jobGrowth": "+35% (Much faster than average)",
+    "bright_outlook": true,
+    "responsibilities": [
+      "Analyze large amounts of information to discover trends and patterns.",
+      "Build predictive models and machine-learning algorithms.",
+      "Present information using data visualization techniques."
+    ],
+    "skills": {
+      "technical": ["Python", "R", "Machine Learning", "Statistics"],
+      "soft": ["Curiosity", "Business Acumen", "Communication"]
+    },
+    "educationPathway": {
+      "degree": "Master's Degree in Data Science or Statistics",
+      "certifications": ["Certified Analytics Professional"]
+    },
+    "difficulty": "Very High",
+    "demandLevel": "Very High",
+    "educationRequired": "Master's Degree",
+    "futureScope": {
+      "demandTrend": "Explosive Growth",
+      "techChanges": "Very High"
+    }
+  },
+  {
+    "_id": "4",
+    "title": "Graphic Designer",
+    "category": "Arts & Design",
+    "description": "Design or create graphics to meet a client's specific commercial or promotional needs, such as packaging, displays, or logos.",
+    "averageSalary": "$57,990",
+    "jobGrowth": "+3% (Slower than average)",
+    "bright_outlook": false,
+    "responsibilities": [
+      "Create visual elements such as logos, original images, and illustrations.",
+      "Design layouts, including selection of colors, images, and typefaces.",
+      "Present design concepts to clients or art directors."
+    ],
+    "skills": {
+      "technical": ["Adobe Creative Suite", "Typography", "Layout Design"],
+      "soft": ["Creativity", "Time Management", "Communication"]
+    },
+    "educationPathway": {
+      "degree": "Bachelor's Degree in Graphic Design",
+      "certifications": ["Adobe Certified Expert"]
+    },
+    "difficulty": "Moderate",
+    "demandLevel": "Moderate",
+    "educationRequired": "Bachelor's Degree",
+    "futureScope": {
+      "demandTrend": "Stable",
+      "techChanges": "High (AI Art)"
+    }
+  },
+  {
+    "_id": "5",
+    "title": "Financial Manager",
+    "category": "Business",
+    "description": "Plan, direct, or coordinate accounting, investing, banking, insurance, securities, and other financial activities.",
+    "averageSalary": "$139,790",
+    "jobGrowth": "+17% (Much faster than average)",
+    "bright_outlook": true,
+    "responsibilities": [
+      "Prepare financial statements, business activity reports, and forecasts.",
+      "Monitor financial details to ensure that legal requirements are met.",
+      "Supervise employees who do financial reporting and budgeting."
+    ],
+    "skills": {
+      "technical": ["Financial Analysis", "Accounting", "Risk Management"],
+      "soft": ["Leadership", "Attention to Detail", "Decision Making"]
+    },
+    "educationPathway": {
+      "degree": "Bachelor's Degree in Finance or Accounting",
+      "certifications": ["CFA", "CPA"]
+    },
+    "difficulty": "High",
+    "demandLevel": "High",
+    "educationRequired": "Bachelor's Degree",
+    "futureScope": {
+      "demandTrend": "Growing",
+      "techChanges": "Moderate (FinTech)"
+    }
+  },
+  {
+    "_id": "6",
+    "title": "Electrician",
+    "category": "Construction",
+    "description": "Install, maintain, and repair electrical wiring, equipment, and fixtures. Ensure that work is in accordance with relevant codes.",
+    "averageSalary": "$60,240",
+    "jobGrowth": "+7% (Faster than average)",
+    "bright_outlook": true,
+    "responsibilities": [
+      "Install and maintain wiring, control, and lighting systems.",
+      "Inspect electrical components, such as transformers and circuit breakers.",
+      "Identify electrical problems with a variety of testing devices."
+    ],
+    "skills": {
+      "technical": ["Circuitry", "Blueprint Reading", "Safety Codes"],
+      "soft": ["Troubleshooting", "Customer Service", "Physical Stamina"]
+    },
+    "educationPathway": {
+      "degree": "High School Diploma + Apprenticeship",
+      "certifications": ["Journeyman Electrician License"]
+    },
+    "difficulty": "Moderate",
+    "demandLevel": "High",
+    "educationRequired": "Apprenticeship",
+    "futureScope": {
+      "demandTrend": "Steady Growth",
+      "techChanges": "Moderate (Smart Homes)"
+    }
+  }
+]
