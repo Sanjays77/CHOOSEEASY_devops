@@ -14,6 +14,8 @@ This project demonstrates version control using Git and GitHub. It includes a se
 - `git remote add origin`: Connected to remote repository.
 - `git push`: Pushed changes to GitHub.
 - `git log`: Viewed commit history.
+- `git tag`: Created a version tag.
+- `git merge branch1 branch2`: Performed an Octopus Merge.
 
 ## Features
 - Client-side React application
