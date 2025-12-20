@@ -20,6 +20,119 @@ This project demonstrates version control using Git and GitHub. It includes a se
 - NodeJS Server
 - REST API integration
 
+## Project Structure
+
+```text
+CHOOSEEASY/
+├── client/
+│   ├── public/
+│   │   ├── images/
+│   │   └── vite.svg
+│   ├── src/
+│   │   ├── assets/
+│   │   │   ├── chooseeasy.png
+│   │   │   └── react.svg
+│   │   ├── components/
+│   │   │   ├── CareerCard.jsx
+│   │   │   ├── FeatureCard.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── TestimonialCard.jsx
+│   │   ├── context/
+│   │   │   └── ThemeContext.jsx
+│   │   ├── data/
+│   │   │   ├── careers.json
+│   │   │   └── testData.js
+│   │   ├── pages/
+│   │   │   ├── Admin.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── AdminUserDetails.jsx
+│   │   │   ├── Auth.jsx
+│   │   │   ├── CareerDetails.jsx
+│   │   │   ├── Contact.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Explore.jsx
+│   │   │   ├── Feedback.jsx
+│   │   │   ├── Home.jsx
+│   │   │   └── Test.jsx
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
+│
+├── server/
+│   ├── data/
+│   │   └── careersData.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── Career.js
+│   │   ├── Contact.js
+│   │   ├── Feedback.js
+│   │   ├── Question.js
+│   │   ├── TestResult.js
+│   │   ├── Testimonial.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── admin.js
+│   │   ├── auth.js
+│   │   ├── careers.js
+│   │   ├── contact.js
+│   │   ├── feedback.js
+│   │   ├── questions.js
+│   │   ├── testResults.js
+│   │   ├── testimonials.js
+│   │   └── user.js
+│   ├── services/
+│   │   └── onetService.js
+│   ├── .env
+│   ├── index.js
+│   ├── package.json
+│   ├── seed.js
+│   ├── seedAdmin.js
+│   └── seedQuestions.js
+│
+├── .gitignore
+├── onet-web-services-openapi.json
+└── README.md
+```
+
+## Roadmap
+
+```text
+CHOOSEEASY Project Roadmap
+├── Phase 1: Foundation & Setup
+│   ├── [x] Project Initialization & Git Setup
+│   ├── [x] Server-Client Architecture Implementation
+│   └── [x] Basic Routing & Navigation Setup
+│
+├── Phase 2: Authentication & User Management
+│   ├── [x] User Authentication (Login/Signup)
+│   ├── [x] Secure Password Validation
+│   └── [x] Admin Dashboard with User Details View
+│
+├── Phase 3: Core Features
+│   ├── [x] Home Page Development (Hero, Stats)
+│   ├── [x] "About Us" Section Implementation
+│   ├── [x] Explore Page (Content Locking)
+│   └── [x] Comprehensive Career Test
+│
+├── Phase 4: UI/UX Enhancements
+│   ├── [x] Mobile Responsiveness (Hamburger Menu)
+│   └── [x] Visual Enhancements (AI Imagery)
+│
+└── Future Scope
+    ├── [ ] Advanced Result Analysis
+    ├── [ ] User Profile Customization
+    ├── [ ] Performance Optimization
+    └── [ ] Production Deployment
+```
+
 ## Testing
 - Unit testing with Jest
 - Integration testing
