@@ -14,5 +14,10 @@ This project demonstrates version control using Git and GitHub. It includes a se
 - `git remote`
 - `git push`
 
+## Features
+- Client-side React application
+- NodeJS Server
+- REST API integration
+
 ## Author
 Sanjays77
