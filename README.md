@@ -5,6 +5,18 @@ Project for Git & GitHub Hands-On Assignment.
 ## Project Overview
 CHOOSEEASY is a web-based career guidance application created to demonstrate Git and GitHub version-control operations. The project focuses on applying Git concepts such as repository initialization, branching strategies, octopus merging, tagging, conflict resolution, and remote repository management using GitHub. This repository is created specifically for academic Git evaluation purposes.
 
+## Technologies Used
+- React.js
+- Tailwind CSS
+- Node.js
+- Express.js
+- MongoDB
+- HTML
+- CSS
+- JavaScript
+- Git (Git Bash)
+- GitHub
+
 ## Commands Used
 - `git init`: Initialized the repository.
 - `git add .`: Staged changes.
@@ -16,6 +28,16 @@ CHOOSEEASY is a web-based career guidance application created to demonstrate Git
 - `git log`: Viewed commit history.
 - `git tag`: Created a version tag.
 - `git merge branch1 branch2`: Performed an Octopus Merge.
+
+## Branches Created
+The following branches were created and used during development:
+- master
+- branch
+- feature
+- test
+- bugfix
+- experiment
+Each branch contains at least one meaningful commit.
 
 ## Features
 - Client-side React application
