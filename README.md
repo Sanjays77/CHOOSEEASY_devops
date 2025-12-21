@@ -50,11 +50,12 @@ CHOOSEEASY is a web-based career guidance application created to demonstrate Git
 ## Branches Created
 The following branches were created and used during development:
 - master
-- branch
 - feature
 - test
 - bugfix
 - experiment
+- octo-feat-1
+- octo-feat-2
 Each branch contains at least one meaningful commit.
 
 ## Features
