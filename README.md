@@ -17,17 +17,35 @@ CHOOSEEASY is a web-based career guidance application created to demonstrate Git
 - Git (Git Bash)
 - GitHub
 
-## Commands Used
+## Git Commands Used
+
+### Repository Initialization
 - `git init`: Initialized the repository.
+
+### Staging & Committing
 - `git add .`: Staged changes.
-- `git commit -m "message"`: Committed changes.
+- `git commit -m "commit message"`: Committed changes.
+
+### Branching
 - `git branch`: Created and listed branches.
-- `git merge`: Merged branches.
-- `git remote add origin`: Connected to remote repository.
-- `git push`: Pushed changes to GitHub.
+- `git checkout -b <branch_name>`: Created and switched to a new branch.
+
+### Merging
+- `git merge <branch_name>`: Merged branches.
+- `git merge octo-feat-1 octo-feat-2`: Performed an Octopus Merge of multiple branches.
+
+### Merge Conflict Resolution
+- **Conflict created intentionally**: Conflict encountered during development.
+- **Conflict resolved manually**: Edited files to resolve differences.
+- **Final merged commit created**: Committed the resolved changes.
+
+### Remote Repository
+- `git remote add origin <repository_url>`: Connected to remote repository.
+- `git push -u origin master`: Pushed master branch to GitHub.
+- `git push origin <branch_name>`: Pushed feature/test branches to GitHub.
+- `git tag`: Created version tags.
+- `git push origin --tags`: Pushed tags to remote.
 - `git log`: Viewed commit history.
-- `git tag`: Created a version tag.
-- `git merge branch1 branch2`: Performed an Octopus Merge.
 
 ## Branches Created
 The following branches were created and used during development:
