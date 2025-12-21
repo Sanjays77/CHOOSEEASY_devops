@@ -187,11 +187,6 @@ CHOOSEEASY Project Roadmap
 ## Conclusion
 This project successfully demonstrates the use of Git for version control. I learned how to manage branches, resolve conflicts, and sync with a remote repository on GitHub.
 
-## Proofs (Screenshots)
-*(Please insert screenshots of your terminal here)*
-
-![Git Log](placeholder-link-git-log)
-![Merge Conflict](placeholder-link-merge-conflict)
 
 ## Author
 Sanjays77
