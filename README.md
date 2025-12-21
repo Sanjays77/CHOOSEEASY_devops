@@ -2,8 +2,8 @@
 
 Project for Git & GitHub Hands-On Assignment.
 
-## Description
-This project demonstrates version control using Git and GitHub. It includes a server-client architecture.
+## Project Overview
+CHOOSEEASY is a web-based career guidance application created to demonstrate Git and GitHub version-control operations. The project focuses on applying Git concepts such as repository initialization, branching strategies, octopus merging, tagging, conflict resolution, and remote repository management using GitHub. This repository is created specifically for academic Git evaluation purposes.
 
 ## Commands Used
 - `git init`: Initialized the repository.
