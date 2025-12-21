@@ -421,7 +421,7 @@ const careersData = [
   // --- ARTS & DESIGN ---
   {
     title: "Graphic Designer",
-    category: "Arts & Design",
+    category: "Creative",
     description:
       "Create visual concepts, using computer software or by hand, to communicate ideas.",
     averageSalary: "$57,990",
@@ -447,7 +447,7 @@ const careersData = [
   },
   {
     title: "Interior Designer",
-    category: "Arts & Design",
+    category: "Creative",
     description:
       "Plan, design, and furnish interiors of residential, commercial, or industrial buildings.",
     averageSalary: "$61,590",
@@ -473,7 +473,7 @@ const careersData = [
   },
   {
     title: "Animator",
-    category: "Arts & Design",
+    category: "Creative",
     description:
       "Create special effects, animation, or other visual images using film, video, computers, or other electronic tools.",
     averageSalary: "$98,950",
@@ -498,7 +498,7 @@ const careersData = [
   // --- LAW & PUBLIC SAFETY ---
   {
     title: "Lawyer",
-    category: "Law",
+    category: "Legal",
     description:
       "Represent clients in criminal and civil litigation and other legal proceedings.",
     averageSalary: "$135,740",
@@ -520,7 +520,7 @@ const careersData = [
   },
   {
     title: "Police Officer",
-    category: "Law",
+    category: "Legal",
     description: "Protect lives and property.",
     averageSalary: "$69,160",
     jobGrowth: "+3% (Slower than average)",
@@ -784,7 +784,8 @@ const careersData = [
   {
     title: "Nutritionist",
     category: "Healthcare",
-    description: "Advise people on what to eat in order to lead a healthy lifestyle or achieve a specific health-related goal.",
+    description:
+      "Advise people on what to eat in order to lead a healthy lifestyle or achieve a specific health-related goal.",
     averageSalary: "$63,090",
     jobGrowth: "+11% (Much faster than average)",
     bright_outlook: true,
@@ -809,7 +810,8 @@ const careersData = [
   {
     title: "Journalist",
     category: "Arts & Design",
-    description: "Research, write, edit, and present news stories for newspapers, magazines, radio, television, and online media.",
+    description:
+      "Research, write, edit, and present news stories for newspapers, magazines, radio, television, and online media.",
     averageSalary: "$49,300",
     jobGrowth: "-9% (Declining)",
     bright_outlook: false,
@@ -829,12 +831,16 @@ const careersData = [
     difficulty: "Moderate",
     demandLevel: "Moderate",
     educationRequired: "Bachelor's Degree",
-    futureScope: { demandTrend: "Declining", techChanges: "High (Digital Media)" },
+    futureScope: {
+      demandTrend: "Declining",
+      techChanges: "High (Digital Media)",
+    },
   },
   {
     title: "Biomedical Engineer",
     category: "Engineering",
-    description: "Combine engineering principles with medical sciences to design and create equipment, devices, computer systems, and software used in healthcare.",
+    description:
+      "Combine engineering principles with medical sciences to design and create equipment, devices, computer systems, and software used in healthcare.",
     averageSalary: "$92,620",
     jobGrowth: "+10% (Faster than average)",
     bright_outlook: true,

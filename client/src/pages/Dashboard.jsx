@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import {
   FaBook,
@@ -31,23 +32,18 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch Test Results
-        const resultsRes = await fetch(
-          `http://localhost:5000/api/test-results/${user.result._id}`
+        // Fetch Test Results - UPDATED endpoint
+        const resultsRes = await api.get(
+          `/test-results/history/${user.result._id}`
         );
-        const resultsData = await resultsRes.json();
-        setTestResults(resultsData);
+        setTestResults(resultsRes.data);
 
         // Fetch Saved Careers and Visit History
-        const profileRes = await fetch(
-          "http://localhost:5000/api/user/profile",
-          {
-            headers: { Authorization: `Bearer ${user.token}` },
-          }
-        );
-        const profileData = await profileRes.json();
-        setSavedCareers(profileData.savedCareers || []);
-        setVisitHistory(profileData.visitHistory || []);
+        const profileRes = await api.get("/user/profile", {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setSavedCareers(profileRes.data.savedCareers || []);
+        setVisitHistory(profileRes.data.visitHistory || []);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -66,15 +62,11 @@ const Dashboard = () => {
     if (!careerId) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/user/save-career/${careerId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
+      const response = await api.delete(`/user/save-career/${careerId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
 
-      if (response.ok) {
+      if (response.status === 200) {
         setSavedCareers(savedCareers.filter((c) => c._id !== careerId));
         setDeleteModal({ show: false, careerId: null });
       } else {
@@ -252,9 +244,9 @@ const Dashboard = () => {
                   New
                 </span>
               </h3>
-              <ul className="space-y-1">
+              <ul className="space-y-1 max-h-60 overflow-y-auto pr-1">
                 {testResults.length > 0 ? (
-                  testResults.slice(0, 5).map((res) => (
+                  testResults.map((res) => (
                     <li key={res._id}>
                       <div className="flex items-center gap-2 text-sm text-gray-300 hover:text-blue-400 cursor-pointer p-1 rounded-md hover:bg-gray-800/50 transition-colors">
                         <FaBook className="text-gray-500" />

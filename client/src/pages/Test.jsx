@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { Link } from "react-router-dom";
-import { FaBrain, FaCode, FaChartLine, FaUserMd, FaGavel, FaCheckCircle, FaArrowRight } from "react-icons/fa";
+import {
+  FaBrain,
+  FaCode,
+  FaChartLine,
+  FaUserMd,
+  FaGavel,
+  FaCheckCircle,
+  FaArrowRight,
+} from "react-icons/fa";
 
 const Test = () => {
   // Stages: 0: Intro, 1: Psychometric, 2: Technical, 3: Aptitude, 4: Result
@@ -41,58 +49,79 @@ const Test = () => {
     try {
       // Fetch questions and careers concurrently
       const [questionsRes, careersRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/questions"),
-        axios.get("http://localhost:5000/api/careers")
+        api.get("/questions"),
+        api.get("/careers"),
       ]);
 
       const allQuestions = questionsRes.data;
 
       // Filter Psychometric
-      setPsychometricQuestions(allQuestions.filter(q => q.category === 'Psychometric'));
+      setPsychometricQuestions(
+        allQuestions.filter((q) => q.category === "Psychometric")
+      );
 
       // Organize Technical by SubCategory
       const techQs = {};
-      allQuestions.filter(q => q.category === 'Technical').forEach(q => {
-        const sub = q.subCategory;
-        if (sub) {
-          if (!techQs[sub]) techQs[sub] = [];
-          techQs[sub].push(q);
-        }
-      });
+      allQuestions
+        .filter((q) => q.category === "Technical")
+        .forEach((q) => {
+          const sub = q.subCategory;
+          if (sub) {
+            if (!techQs[sub]) techQs[sub] = [];
+            techQs[sub].push(q);
+          }
+        });
       setTechnicalQuestions(techQs);
 
       // Filter Aptitude
-      setAptitudeQuestions(allQuestions.filter(q => q.category === 'Aptitude'));
+      setAptitudeQuestions(
+        allQuestions.filter((q) => q.category === "Aptitude")
+      );
 
       // Map Careers for descriptions
       const careerMap = {};
-      careersRes.data.forEach(c => {
+      careersRes.data.forEach((c) => {
         careerMap[c.category] = c.description;
       });
 
       // Fallback descriptions
       const staticDesc = {
-        IT: "You have a logical mind and enjoy problem-solving. A career in Technology, Software Development, or Data Science would be a great fit.",
-        Creative: "You have a strong artistic sense and enjoy expression. Consider careers in Graphic Design, UI/UX, or Multimedia Arts.",
-        Business: "You are a natural leader with a knack for strategy. Management, Marketing, or Entrepreneurship could be your path.",
-        Healthcare: "You are compassionate and science-oriented. Nursing, Medicine, or Therapy are fields where you could shine.",
-        Government: "You value stability and public service. Roles in Administration, Policy, or Civil Service may suit you well.",
+        Technology:
+          "You have a logical mind and enjoy problem-solving. A career in Software, AI, or Data Science would be a great fit.",
+        Creative:
+          "You have a strong artistic sense and enjoy expression. Consider careers in Graphic Design, UI/UX, or Multimedia Arts.",
+        Business:
+          "You are a natural leader with a knack for strategy. Management, Marketing, or Entrepreneurship could be your path.",
+        Healthcare:
+          "You are compassionate and science-oriented. Nursing, Medicine, or Therapy are fields where you could shine.",
+        Science:
+          "You are curious and analytical. Research, Lab Work, or Environmental Science allows you to discover new things.",
+        Legal:
+          "You value justice, structure, and debate. Law, Policy, or Advocacy are areas where you can make an impact.",
+        Education:
+          "You love helping others learn and grow. Teaching, Training, or Coaching would be very rewarding for you.",
       };
 
       setCareerDescriptions({ ...staticDesc, ...careerMap });
       setLoading(false);
-
     } catch (error) {
       console.error("Failed to load test content", error);
       setLoading(false);
     }
   };
 
-
   // Calculate Psychometric Result to determine Technical Track
   useEffect(() => {
     if (stage === 2 && !topCareer) {
-      const careerScores = { IT: 0, Creative: 0, Business: 0, Healthcare: 0, Government: 0 };
+      const careerScores = {
+        Technology: 0,
+        Creative: 0,
+        Business: 0,
+        Healthcare: 0,
+        Science: 0,
+        Legal: 0,
+        Education: 0,
+      };
 
       // UPDATED: Handle object structure for answer
       // psychoAnswers is { questionId: { scores: { IT: 2... }, questionText: "..." } }
@@ -101,11 +130,12 @@ const Test = () => {
         // Let's support the new structure prioritized.
         const answerScores = answerData.scores || answerData; // Fallback if simple object
 
-        if (answerScores && typeof answerScores === 'object') {
+        if (answerScores && typeof answerScores === "object") {
           Object.keys(answerScores).forEach((career) => {
             // Check if value is number to avoid "questionText"
-            if (typeof answerScores[career] === 'number') {
-              careerScores[career] = (careerScores[career] || 0) + answerScores[career];
+            if (typeof answerScores[career] === "number") {
+              careerScores[career] =
+                (careerScores[career] || 0) + answerScores[career];
             }
           });
         }
@@ -126,7 +156,7 @@ const Test = () => {
     // Store: { scores: {...}, questionText: "..." }
     setPsychoAnswers({
       ...psychoAnswers,
-      [currentQ._id]: { scores: answerScores, questionText: currentQ.text }
+      [currentQ._id]: { scores: answerScores, questionText: currentQ.text },
     });
 
     if (currentQuestionIndex < psychometricQuestions.length - 1) {
@@ -146,14 +176,18 @@ const Test = () => {
       [currentQ._id]: {
         questionText: currentQ.text,
         selectedOption: option.text,
-        isCorrect: option.correct
-      }
+        isCorrect: option.correct,
+      },
     });
 
-    if (option.correct) setScores(prev => ({ ...prev, technical: prev.technical + 1 }));
+    if (option.correct)
+      setScores((prev) => ({ ...prev, technical: prev.technical + 1 }));
 
     const currentTechQuestions = technicalQuestions[topCareer] || [];
-    if (currentTechQuestions && currentQuestionIndex < currentTechQuestions.length - 1) {
+    if (
+      currentTechQuestions &&
+      currentQuestionIndex < currentTechQuestions.length - 1
+    ) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       setStage(3);
@@ -170,11 +204,12 @@ const Test = () => {
       [currentQ._id]: {
         questionText: currentQ.text,
         selectedOption: option.text,
-        isCorrect: option.correct
-      }
+        isCorrect: option.correct,
+      },
     });
 
-    if (option.correct) setScores(prev => ({ ...prev, aptitude: prev.aptitude + 1 }));
+    if (option.correct)
+      setScores((prev) => ({ ...prev, aptitude: prev.aptitude + 1 }));
 
     if (currentQuestionIndex < aptitudeQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -182,7 +217,6 @@ const Test = () => {
       setStage(4);
     }
   };
-
 
   useEffect(() => {
     if (stage === 4) {
@@ -206,20 +240,20 @@ const Test = () => {
         answers: {
           psychometric: psychoAnswers,
           technical: techAnswers,
-          aptitude: aptitudeAnswers
+          aptitude: aptitudeAnswers,
         },
         categoryScores: scores,
         recommendedCareer: topCareer,
         details: {
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       };
 
-      await axios.post("http://localhost:5000/api/test-results/submit", testData);
-      setSubmissionStatus('success');
+      await api.post("/test-results/submit", testData);
+      setSubmissionStatus("success");
     } catch (error) {
       console.error("Error submitting test results", error);
-      setSubmissionStatus('error');
+      setSubmissionStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -237,21 +271,38 @@ const Test = () => {
           Discover Your True Potential
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
-          Welcome to the comprehensive <span className="text-blue-600 font-bold">CHOOSE EASY Career Assessment</span>. This multi-stage test will analyze your personality, skills, and aptitude to recommend your perfect career path.
+          Welcome to the comprehensive{" "}
+          <span className="text-blue-600 font-bold">
+            CHOOSE EASY Career Assessment
+          </span>
+          . This multi-stage test will analyze your personality, skills, and
+          aptitude to recommend your perfect career path.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-left">
           <div className="p-4 bg-blue-50 dark:bg-gray-700 rounded-xl">
-            <h3 className="font-bold text-blue-800 dark:text-blue-300 mb-2">1. Psychometric</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Uncover your personality traits and work preferences.</p>
+            <h3 className="font-bold text-blue-800 dark:text-blue-300 mb-2">
+              1. Psychometric
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Uncover your personality traits and work preferences.
+            </p>
           </div>
           <div className="p-4 bg-purple-50 dark:bg-gray-700 rounded-xl">
-            <h3 className="font-bold text-purple-800 dark:text-purple-300 mb-2">2. Technical</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Test skills specific to your matched domain.</p>
+            <h3 className="font-bold text-purple-800 dark:text-purple-300 mb-2">
+              2. Technical
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Test skills specific to your matched domain.
+            </p>
           </div>
           <div className="p-4 bg-green-50 dark:bg-gray-700 rounded-xl">
-            <h3 className="font-bold text-green-800 dark:text-green-300 mb-2">3. Any Aptitude</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Evaluate your logical and analytical reasoning.</p>
+            <h3 className="font-bold text-green-800 dark:text-green-300 mb-2">
+              3. Any Aptitude
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Evaluate your logical and analytical reasoning.
+            </p>
           </div>
         </div>
 
@@ -273,10 +324,20 @@ const Test = () => {
       <div className="max-w-2xl mx-auto animate-fade-in">
         <div className="mb-6 flex justify-between items-center text-gray-500 dark:text-gray-400 font-medium">
           <span>Stage 1: Psychometric Analysis</span>
-          <span>Question {currentQuestionIndex + 1} / {psychometricQuestions.length}</span>
+          <span>
+            Question {currentQuestionIndex + 1} / {psychometricQuestions.length}
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8 dark:bg-gray-700">
-          <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style={{ width: `${((currentQuestionIndex + 1) / psychometricQuestions.length) * 100}%` }}></div>
+          <div
+            className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+            style={{
+              width: `${
+                ((currentQuestionIndex + 1) / psychometricQuestions.length) *
+                100
+              }%`,
+            }}
+          ></div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border-t-4 border-blue-500">
@@ -307,7 +368,8 @@ const Test = () => {
   };
 
   const TechnicalView = () => {
-    if (!topCareer) return <div className="text-center p-10">Running Analysis...</div>;
+    if (!topCareer)
+      return <div className="text-center p-10">Running Analysis...</div>;
 
     const questions = technicalQuestions[topCareer] || [];
     const question = questions[currentQuestionIndex];
@@ -315,13 +377,20 @@ const Test = () => {
     if (questions.length === 0) {
       return (
         <div className="text-center p-10 animate-fade-in">
-          <h3 className="text-2xl font-bold mb-4">You matched with {topCareer}!</h3>
-          <p>We are currently updating our technical questions for this path.</p>
-          <button onClick={() => setStage(3)} className="mt-4 bg-blue-600 text-white px-6 py-2 rounded">
+          <h3 className="text-2xl font-bold mb-4">
+            You matched with {topCareer}!
+          </h3>
+          <p>
+            We are currently updating our technical questions for this path.
+          </p>
+          <button
+            onClick={() => setStage(3)}
+            className="mt-4 bg-blue-600 text-white px-6 py-2 rounded"
+          >
             Proceed to Aptitude Test
           </button>
         </div>
-      )
+      );
     }
 
     if (!question) return null;
@@ -330,10 +399,19 @@ const Test = () => {
       <div className="max-w-2xl mx-auto animate-fade-in">
         <div className="mb-6 flex justify-between items-center text-gray-500 dark:text-gray-400 font-medium">
           <span>Stage 2: {topCareer} Skills Assessment</span>
-          <span>Question {currentQuestionIndex + 1} / {questions.length}</span>
+          <span>
+            Question {currentQuestionIndex + 1} / {questions.length}
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8 dark:bg-gray-700">
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}></div>
+          <div
+            className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500"
+            style={{
+              width: `${
+                ((currentQuestionIndex + 1) / questions.length) * 100
+              }%`,
+            }}
+          ></div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border-t-4 border-purple-500">
@@ -374,10 +452,19 @@ const Test = () => {
       <div className="max-w-2xl mx-auto animate-fade-in">
         <div className="mb-6 flex justify-between items-center text-gray-500 dark:text-gray-400 font-medium">
           <span>Stage 3: General Aptitude</span>
-          <span>Question {currentQuestionIndex + 1} / {aptitudeQuestions.length}</span>
+          <span>
+            Question {currentQuestionIndex + 1} / {aptitudeQuestions.length}
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8 dark:bg-gray-700">
-          <div className="bg-gradient-to-r from-green-400 to-emerald-600 h-2.5 rounded-full transition-all duration-500" style={{ width: `${((currentQuestionIndex + 1) / aptitudeQuestions.length) * 100}%` }}></div>
+          <div
+            className="bg-gradient-to-r from-green-400 to-emerald-600 h-2.5 rounded-full transition-all duration-500"
+            style={{
+              width: `${
+                ((currentQuestionIndex + 1) / aptitudeQuestions.length) * 100
+              }%`,
+            }}
+          ></div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border-t-4 border-green-500">
@@ -416,22 +503,36 @@ const Test = () => {
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-10 text-center text-white">
-            <h1 className="text-4xl font-extrabold mb-4">Assessment Complete!</h1>
-            <p className="text-xl opacity-90">Here is your personalized career analysis.</p>
-            {isSubmitting && <p className="text-sm mt-2 opacity-80 animate-pulse">Saving your results...</p>}
-            {submissionStatus === 'success' && <p className="text-sm mt-2 font-bold bg-green-500/20 inline-block px-3 py-1 rounded-full border border-white/20">Results Saved Successfully ✅</p>}
+            <h1 className="text-4xl font-extrabold mb-4">
+              Assessment Complete!
+            </h1>
+            <p className="text-xl opacity-90">
+              Here is your personalized career analysis.
+            </p>
+            {isSubmitting && (
+              <p className="text-sm mt-2 opacity-80 animate-pulse">
+                Saving your results...
+              </p>
+            )}
+            {submissionStatus === "success" && (
+              <p className="text-sm mt-2 font-bold bg-green-500/20 inline-block px-3 py-1 rounded-full border border-white/20">
+                Results Saved Successfully ✅
+              </p>
+            )}
           </div>
 
           <div className="p-8 md:p-12 space-y-12">
-
             {/* Top Match */}
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Top Career Match</h2>
+              <h2 className="text-2xl font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
+                Top Career Match
+              </h2>
               <div className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-6">
                 {topCareer}
               </div>
               <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                {careerDescriptions[topCareer] || "A great match for your skills!"}
+                {careerDescriptions[topCareer] ||
+                  "A great match for your skills!"}
               </p>
             </div>
 
@@ -439,30 +540,51 @@ const Test = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl border border-gray-100 dark:border-gray-600">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">Technical Score</h3>
-                  <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-bold">Domain Specific</span>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                    Technical Score
+                  </h3>
+                  <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-bold">
+                    Domain Specific
+                  </span>
                 </div>
                 <div className="text-4xl font-bold text-purple-600 mb-2">
-                  {scores.technical} <span className="text-lg text-gray-400">/ {technicalQuestions[topCareer]?.length || 0}</span>
+                  {scores.technical}{" "}
+                  <span className="text-lg text-gray-400">
+                    / {technicalQuestions[topCareer]?.length || 0}
+                  </span>
                 </div>
-                <p className="text-gray-500 text-sm">Based on your {topCareer} knowledge.</p>
+                <p className="text-gray-500 text-sm">
+                  Based on your {topCareer} knowledge.
+                </p>
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl border border-gray-100 dark:border-gray-600">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">Aptitude Score</h3>
-                  <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">General Logic</span>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                    Aptitude Score
+                  </h3>
+                  <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">
+                    General Logic
+                  </span>
                 </div>
                 <div className="text-4xl font-bold text-green-600 mb-2">
-                  {scores.aptitude} <span className="text-lg text-gray-400">/ {aptitudeQuestions.length}</span>
+                  {scores.aptitude}{" "}
+                  <span className="text-lg text-gray-400">
+                    / {aptitudeQuestions.length}
+                  </span>
                 </div>
-                <p className="text-gray-500 text-sm">Based on logic, math, and grammar.</p>
+                <p className="text-gray-500 text-sm">
+                  Based on logic, math, and grammar.
+                </p>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col md:flex-row justify-center gap-4 mt-8">
-              <Link to="/explore" className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition shadow-lg text-center">
+              <Link
+                to="/explore"
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition shadow-lg text-center"
+              >
                 Explore Applied Careers
               </Link>
               <button
@@ -472,18 +594,20 @@ const Test = () => {
                 Retake Assessment
               </button>
             </div>
-
           </div>
         </div>
       </div>
     );
   };
 
-  if (loading) return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-      <div className="text-2xl font-bold text-gray-500 animate-pulse">Loading Assessment...</div>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-2xl font-bold text-gray-500 animate-pulse">
+          Loading Assessment...
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-4 transition-colors duration-300 font-sans">
