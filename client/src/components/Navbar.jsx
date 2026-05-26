@@ -111,12 +111,12 @@ const Navbar = () => {
                 {theme === "light" ? <FaMoon /> : <FaSun />}
               </button>
 
-              <Link
-                to="/auth"
+              <button
+                onClick={() => navigate("/auth")}
                 className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300 text-sm font-semibold shadow-lg hover:shadow-xl"
               >
                 Sign In
-              </Link>
+              </button>
             </>
           )}
         </div>
@@ -218,13 +218,15 @@ const Navbar = () => {
                 >
                   {theme === "light" ? <FaMoon /> : <FaSun />}
                 </button>
-                <Link
-                  to="/auth"
+                <button
+                  onClick={() => {
+                    navigate("/auth");
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300 text-sm font-semibold shadow-lg hover:shadow-xl"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign In
-                </Link>
+                </button>
               </div>
             </>
           )}

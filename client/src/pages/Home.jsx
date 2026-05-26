@@ -90,7 +90,7 @@ const Home = () => {
           <div className="flex flex-col md:flex-row justify-center gap-4">
             <Link
               to="/test"
-              className="bg-blue-600 text-white border border-blue-400 px-8 py-4 rounded-full text-lg font-bold hover:bg-blue-700 transition shadow-lg hover:shadow-blue-500/50 backdrop-blur-sm bg-opacity-90"
+              className="bg-red-600 text-white border border-red-400 px-8 py-4 rounded-full text-lg font-bold hover:bg-red-700 transition shadow-lg hover:shadow-red-500/50 backdrop-blur-sm bg-opacity-90"
             >
               Start Career Test
             </Link>

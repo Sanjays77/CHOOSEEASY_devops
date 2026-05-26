@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 
 const CareerCard = ({ career, locked }) => {
+  const navigate = useNavigate();
   return (
     <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col h-full border border-gray-100 dark:border-gray-700 overflow-hidden">
       {/* Locked Overlay */}
@@ -17,12 +18,12 @@ const CareerCard = ({ career, locked }) => {
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 max-w-[200px]">
             Sign in to explore detailed insights about this career path.
           </p>
-          <Link
-            to="/auth"
+          <button
+            onClick={() => navigate("/auth")}
             className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition-colors shadow-md"
           >
             Sign In to View
-          </Link>
+          </button>
         </div>
       )}
 

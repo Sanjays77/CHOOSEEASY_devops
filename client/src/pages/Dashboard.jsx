@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import AIRecommendationView from "../components/AIRecommendationView";
 import {
   FaBook,
   FaCodeBranch,
@@ -9,6 +10,7 @@ import {
   FaUserCircle,
   FaLightbulb,
   FaTrash,
+  FaBrain,
 } from "react-icons/fa";
 
 const Dashboard = () => {
@@ -22,6 +24,10 @@ const Dashboard = () => {
     careerId: null,
   });
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [expandedResultId, setExpandedResultId] = useState(null);
+  const [loadingAIId, setLoadingAIId] = useState(null);
+  const [wishText, setWishText] = useState("");
+  const [aiErrorText, setAiErrorText] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,6 +80,28 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error removing career:", error);
+    }
+  };
+
+  const handleGenerateAIFromDashboard = async (resultId) => {
+    setLoadingAIId(resultId);
+    setAiErrorText("");
+    try {
+      const response = await api.post("/test-results/ai-recommendation", {
+        resultId,
+        wish: wishText
+      });
+      
+      const updatedResult = response.data;
+      
+      // Update local testResults state with the updated result
+      setTestResults(prev => prev.map(res => res._id === resultId ? updatedResult : res));
+      setWishText("");
+    } catch (error) {
+      console.error("AI recommendation error:", error);
+      setAiErrorText(error.response?.data?.message || error.message || "Failed to generate AI recommendation.");
+    } finally {
+      setLoadingAIId(null);
     }
   };
 
@@ -440,38 +468,101 @@ const Dashboard = () => {
                       </h3>
                       {testResults.length > 0 ? (
                         <div className="space-y-4">
-                          {testResults.map((result) => (
-                            <div
-                              key={result._id}
-                              className="bg-gray-900/50 border border-gray-700 rounded-md p-4"
-                            >
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h4 className="font-bold text-blue-400 text-lg">
-                                    {result.recommendedCareer}
-                                  </h4>
-                                  <p className="text-xs text-gray-500">
-                                    Taken on{" "}
-                                    {new Date(
-                                      result.createdAt
-                                    ).toLocaleDateString()}
-                                  </p>
+                          {testResults.map((result) => {
+                            const isExpanded = expandedResultId === result._id;
+                            const hasAiRec = result.details?.aiRecommendation;
+
+                            return (
+                              <div
+                                key={result._id}
+                                className="bg-gray-900/50 border border-gray-700 rounded-md p-4 transition-all duration-300"
+                              >
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <h4 className="font-bold text-blue-400 text-lg">
+                                      {result.recommendedCareer}
+                                    </h4>
+                                    <p className="text-xs text-gray-500">
+                                      Taken on{" "}
+                                      {new Date(
+                                        result.testDate || result.createdAt || Date.now()
+                                      ).toLocaleDateString()}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col items-end gap-2">
+                                    <span className="text-xs font-semibold text-green-400 bg-green-950/30 px-2 py-0.5 rounded border border-green-800/40">
+                                      Match Found
+                                    </span>
+                                    <button
+                                      onClick={() => setExpandedResultId(isExpanded ? null : result._id)}
+                                      className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-1 rounded transition-colors"
+                                    >
+                                      {isExpanded ? "Collapse" : "View AI Roadmap"}
+                                    </button>
+                                  </div>
                                 </div>
-                                <div className="text-right">
-                                  <span className="block text-sm font-semibold text-green-400">
-                                    Match Found
-                                  </span>
-                                </div>
+
+                                {isExpanded && (
+                                  <div className="mt-4 pt-4 border-t border-gray-800 space-y-4">
+                                    <p className="text-sm text-gray-300">
+                                      Based on your answers, this career path
+                                      strongly aligns with your interests and
+                                      skills.
+                                    </p>
+
+                                    {/* AI recommendation details */}
+                                    <div className="pt-4 border-t border-gray-850">
+                                      {loadingAIId === result._id ? (
+                                        <div className="bg-slate-900 border border-indigo-500/20 rounded-2xl p-6 text-center space-y-4 animate-pulse">
+                                          <FaBrain className="text-indigo-400 text-2xl animate-spin mx-auto" />
+                                          <p className="text-sm text-indigo-300">Consulting CHOOSEEASY AI Advisor...</p>
+                                        </div>
+                                      ) : hasAiRec ? (
+                                        <div className="space-y-4">
+                                          <div className="bg-indigo-950/10 border border-indigo-900/30 rounded-xl p-3 text-xs text-indigo-300 flex items-center gap-2">
+                                            <span>✨ AI Career Intelligence Report loaded successfully.</span>
+                                          </div>
+                                          <AIRecommendationView recommendation={hasAiRec} />
+                                        </div>
+                                      ) : (
+                                        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-6 space-y-4">
+                                          <div className="space-y-2">
+                                            <h5 className="text-sm font-bold text-white flex items-center gap-2">
+                                              <FaBrain className="text-indigo-400" /> Generate Advanced AI Roadmap
+                                            </h5>
+                                            <p className="text-xs text-gray-400 leading-relaxed">
+                                              Let Gemini analyze your test history. Add any specific wishes (e.g. remote work, specific location, programming languages) to customize your roadmap.
+                                            </p>
+                                          </div>
+
+                                          <div className="space-y-3">
+                                            <input
+                                              type="text"
+                                              value={wishText}
+                                              onChange={(e) => setWishText(e.target.value)}
+                                              placeholder="Any specific wishes? (e.g., 'remote work', 'software engineering in UK')"
+                                              className="w-full px-3 py-2 text-xs rounded border border-gray-700 bg-gray-800 text-white outline-none focus:border-indigo-500"
+                                            />
+                                            <button
+                                              onClick={() => handleGenerateAIFromDashboard(result._id)}
+                                              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-2 rounded text-xs transition duration-200"
+                                            >
+                                              Generate AI Career Analysis
+                                            </button>
+                                          </div>
+                                          {aiErrorText && (
+                                            <div className="p-2 bg-red-950/20 border border-red-900/40 rounded text-[11px] text-red-400">
+                                              ⚠️ {aiErrorText}
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                              <div className="mt-3 pt-3 border-t border-gray-800">
-                                <p className="text-sm text-gray-300">
-                                  Based on your answers, this career path
-                                  strongly aligns with your interests and
-                                  skills.
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       ) : (
                         <p className="text-gray-400 italic">

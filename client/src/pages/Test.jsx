@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api/axios";
 import { Link } from "react-router-dom";
+import AIRecommendationView from "../components/AIRecommendationView";
 import {
   FaBrain,
   FaCode,
@@ -40,6 +41,13 @@ const Test = () => {
   // Submit Results
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState(null); // 'success' | 'error'
+  const [savedResultId, setSavedResultId] = useState(null);
+
+  // AI Recommendation States
+  const [wish, setWish] = useState("");
+  const [aiRecommendation, setAiRecommendation] = useState(null);
+  const [loadingAI, setLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState(null);
 
   useEffect(() => {
     fetchTestContent();
@@ -249,13 +257,45 @@ const Test = () => {
         },
       };
 
-      await api.post("/test-results/submit", testData);
+      const response = await api.post("/test-results/submit", testData);
       setSubmissionStatus("success");
+      if (response.data && response.data._id) {
+        setSavedResultId(response.data._id);
+      }
     } catch (error) {
       console.error("Error submitting test results", error);
       setSubmissionStatus("error");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleGenerateAI = async () => {
+    if (!savedResultId) {
+      alert("Test results have not been saved yet. Please wait.");
+      return;
+    }
+
+    setLoadingAI(true);
+    setAiError(null);
+    try {
+      const response = await api.post("/test-results/ai-recommendation", {
+        resultId: savedResultId,
+        wish
+      });
+      
+      // Get AI Recommendation from updated details
+      const aiRecommendationObj = response.data?.details?.aiRecommendation;
+      if (aiRecommendationObj) {
+        setAiRecommendation(aiRecommendationObj);
+      } else {
+        throw new Error("No recommendation was returned from the AI service.");
+      }
+    } catch (error) {
+      console.error("AI recommendation error:", error);
+      setAiError(error.response?.data?.message || error.message || "Failed to generate AI recommendation.");
+    } finally {
+      setLoadingAI(false);
     }
   };
 
@@ -579,8 +619,75 @@ const Test = () => {
               </div>
             </div>
 
+            {/* AI Recommendation Section */}
+            <div className="mt-12 pt-12 border-t border-gray-100 dark:border-gray-700">
+              {loadingAI ? (
+                <div className="bg-slate-900 border border-indigo-500/20 rounded-3xl p-8 text-center space-y-6 animate-pulse">
+                  <div className="w-16 h-16 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto animate-spin shadow-lg">
+                    <FaBrain className="text-white text-3xl" />
+                  </div>
+                  <h3 className="text-xl font-bold text-indigo-300">Consulting CHOOSEEASY AI Advisor...</h3>
+                  <div className="max-w-md mx-auto space-y-2">
+                    <p className="text-sm text-gray-400">Analyzing your psychometric profile and category scores...</p>
+                    <p className="text-xs text-indigo-400 italic">"Engineering your personalized learning milestones & market insights"</p>
+                  </div>
+                  <div className="h-2 bg-slate-800 rounded-full max-w-sm mx-auto overflow-hidden">
+                    <div className="bg-indigo-500 h-full w-2/3 rounded-full animate-infinite-loading"></div>
+                  </div>
+                </div>
+              ) : aiRecommendation ? (
+                <div className="space-y-6">
+                  <div className="text-center mb-6">
+                    <span className="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      AI Generated Insights
+                    </span>
+                    <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-2">Your Career Intelligence Report</h2>
+                  </div>
+                  <AIRecommendationView recommendation={aiRecommendation} />
+                </div>
+              ) : (
+                <div className="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-slate-850 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-3xl p-6 md:p-8 shadow-xl">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex-1 space-y-3">
+                      <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+                        Unlock Advanced AI Career Analysis
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed">
+                        Analyze your test responses against Gemini's advanced models. Get salary benchmarks, target job titles, a step-by-step learning roadmap, and tailored tips matching your preferences.
+                      </p>
+                      
+                      <div className="space-y-2">
+                        <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                          Tell AI your specific wishes (Optional)
+                        </label>
+                        <input
+                          type="text"
+                          value={wish}
+                          onChange={(e) => setWish(e.target.value)}
+                          placeholder="e.g. 'I want to work remotely', 'I want high growth', 'I prefer coding over design'..."
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none focus:border-indigo-500 transition duration-250 text-sm shadow-inner"
+                        />
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={handleGenerateAI}
+                      className="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-8 py-4 rounded-2xl shadow-lg transition duration-200 hover:-translate-y-0.5 text-center flex items-center justify-center gap-2"
+                    >
+                      <FaBrain /> Generate AI Roadmap
+                    </button>
+                  </div>
+                  {aiError && (
+                    <div className="mt-4 p-3 bg-red-100 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl text-xs text-red-600 dark:text-red-400">
+                      ⚠️ {aiError}. Please try again.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Action Buttons */}
-            <div className="flex flex-col md:flex-row justify-center gap-4 mt-8">
+            <div className="flex flex-col md:flex-row justify-center gap-4 mt-12 pt-8 border-t border-gray-100 dark:border-gray-750">
               <Link
                 to="/explore"
                 className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition shadow-lg text-center"

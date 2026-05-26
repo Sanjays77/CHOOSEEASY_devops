@@ -24,7 +24,7 @@ const AdminUserDetails = () => {
         const headers = { Authorization: `Bearer ${token}` };
 
         const res = await axios.get(
-          `http://localhost:5000/api/admin/users/${id}`,
+          `${import.meta.env.VITE_API_URL}/admin/users/${id}`,
           { headers }
         );
         setData(res.data);

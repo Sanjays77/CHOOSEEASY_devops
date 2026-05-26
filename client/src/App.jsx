@@ -12,6 +12,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminUserDetails from "./pages/AdminUserDetails";
 import Test from "./pages/Test";
 import CareerDetails from "./pages/CareerDetails";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
@@ -20,7 +22,7 @@ const App = () => {
       const user = JSON.parse(localStorage.getItem("profile"));
       if (user?.token) {
         try {
-          await fetch("http://localhost:5000/api/user/visit", {
+          await fetch(`${import.meta.env.VITE_API_URL}/user/visit`, {
             method: "POST",
             headers: { Authorization: `Bearer ${user.token}` },
           });
@@ -41,6 +43,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/career/:id" element={<CareerDetails />} />
               <Route path="/contact" element={<Contact />} />

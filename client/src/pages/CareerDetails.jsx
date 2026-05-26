@@ -12,7 +12,7 @@ const CareerDetails = () => {
   useEffect(() => {
     const fetchCareer = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/careers/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/careers/${id}`);
         const data = await response.json();
         setCareer(data);
       } catch (error) {
@@ -25,7 +25,7 @@ const CareerDetails = () => {
     const checkSavedStatus = async () => {
       if (!user?.token) return;
       try {
-        const response = await fetch("http://localhost:5000/api/user/profile", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const userData = await response.json();
@@ -51,7 +51,7 @@ const CareerDetails = () => {
     try {
       const method = isSaved ? "DELETE" : "POST";
       const response = await fetch(
-        `http://localhost:5000/api/user/save-career/${id}`,
+        `${import.meta.env.VITE_API_URL}/user/save-career/${id}`,
         {
           method,
           headers: { Authorization: `Bearer ${user.token}` },

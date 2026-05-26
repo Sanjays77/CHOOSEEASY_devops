@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaUser,
   FaEnvelope,
@@ -82,8 +82,8 @@ const Auth = () => {
     setLoading(true);
 
     const endpoint = isSignup
-      ? "http://localhost:5000/api/auth/signup"
-      : "http://localhost:5000/api/auth/login";
+      ? `${import.meta.env.VITE_API_URL}/auth/signup`
+      : `${import.meta.env.VITE_API_URL}/auth/login`;
 
     try {
       const response = await fetch(endpoint, {
@@ -244,6 +244,17 @@ const Auth = () => {
               <p className="text-xs text-right text-blue-200">
                 {strength.label}
               </p>
+            </div>
+          )}
+
+          {!isSignup && (
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-200 hover:text-white transition-colors hover:underline"
+              >
+                Forgot Password?
+              </Link>
             </div>
           )}
 

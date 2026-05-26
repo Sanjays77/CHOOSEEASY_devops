@@ -47,10 +47,10 @@ const AdminDashboard = () => {
 
       const [usersRes, feedbackRes, careersRes, questionsRes] =
         await Promise.all([
-          axios.get("http://localhost:5000/api/admin/users", { headers }),
-          axios.get("http://localhost:5000/api/admin/feedback", { headers }),
-          axios.get("http://localhost:5000/api/careers"), // Public read
-          axios.get("http://localhost:5000/api/questions"), // Public read, admin write
+          axios.get(`${import.meta.env.VITE_API_URL}/admin/users`, { headers }),
+          axios.get(`${import.meta.env.VITE_API_URL}/admin/feedback`, { headers }),
+          axios.get(`${import.meta.env.VITE_API_URL}/careers`), // Public read
+          axios.get(`${import.meta.env.VITE_API_URL}/questions`), // Public read, admin write
         ]);
 
       setUsers(usersRes.data);
@@ -77,10 +77,10 @@ const AdminDashboard = () => {
     try {
       const url =
         type === "user"
-          ? `http://localhost:5000/api/admin/users/${id}`
+          ? `${import.meta.env.VITE_API_URL}/admin/users/${id}`
           : type === "career"
-          ? `http://localhost:5000/api/careers/${id}`
-          : `http://localhost:5000/api/questions/${id}`;
+          ? `${import.meta.env.VITE_API_URL}/careers/${id}`
+          : `${import.meta.env.VITE_API_URL}/questions/${id}`;
 
       await axios.delete(url, { headers: getHeaders() });
       fetchData(); // Refresh
@@ -97,25 +97,25 @@ const AdminDashboard = () => {
       if (modalType === "career") {
         if (selectedItem._id) {
           await axios.put(
-            `http://localhost:5000/api/careers/${selectedItem._id}`,
+            `${import.meta.env.VITE_API_URL}/careers/${selectedItem._id}`,
             selectedItem,
             { headers }
           );
         } else {
-          await axios.post(`http://localhost:5000/api/careers`, selectedItem, {
+          await axios.post(`${import.meta.env.VITE_API_URL}/careers`, selectedItem, {
             headers,
           });
         }
       } else if (modalType === "question") {
         if (selectedItem._id) {
           await axios.put(
-            `http://localhost:5000/api/questions/${selectedItem._id}`,
+            `${import.meta.env.VITE_API_URL}/questions/${selectedItem._id}`,
             selectedItem,
             { headers }
           );
         } else {
           await axios.post(
-            `http://localhost:5000/api/questions`,
+            `${import.meta.env.VITE_API_URL}/questions`,
             selectedItem,
             { headers }
           );
@@ -161,7 +161,7 @@ const AdminDashboard = () => {
   const fetchUserDetails = async (id) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/admin/users/${id}`,
+        `${import.meta.env.VITE_API_URL}/admin/users/${id}`,
         { headers: getHeaders() }
       );
       setSelectedItem({ ...res.data.user, testResults: res.data.testResults });

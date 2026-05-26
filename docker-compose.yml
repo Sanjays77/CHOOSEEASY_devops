@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: chooseeasy-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - chooseeasy-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: chooseeasy-server
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/chooseeasy
+      - JWT_SECRET=your_jwt_secret_key_here
+      - AI_SERVICE_URL=http://ai-service:5001
+    depends_on:
+      - mongodb
+    networks:
+      - chooseeasy-network
+
+  ai-service:
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    container_name: chooseeasy-ai-service
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - GEMINI_API_KEY=AIzaSyCjBg7-Rl-sc0x6Vvc_rrFyqTFMVfUx9OQ
+    networks:
+      - chooseeasy-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: chooseeasy-client
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    depends_on:
+      - server
+      - ai-service
+    networks:
+      - chooseeasy-network
+
+volumes:
+  mongo_data:
+
+networks:
+  chooseeasy-network:
+    driver: bridge
