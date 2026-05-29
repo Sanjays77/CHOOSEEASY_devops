@@ -1,7 +1,7 @@
 name: chooseeasy
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:6
     platform: linux/amd64
     container_name: chooseeasy-mongodb
     ports:
