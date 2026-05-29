@@ -167,42 +167,8 @@ const Home = () => {
           <h2 className="text-4xl font-bold mb-12 text-blue-900 dark:text-blue-400">
             About Us
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 justify-items-center">
-            {/* Team Member 1 */}
-            {/* Team Member 1 */}
-            <div className="bg-white dark:bg-gray-700 p-8 rounded-2xl shadow-xl flex flex-col items-center max-w-sm w-full transform hover:-translate-y-2 transition duration-300">
-              <div className="w-60 h-80 bg-gray-300 dark:bg-gray-600 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border-4 border-blue-500">
-                <img
-                  src="/images/Karthik.png"
-                  alt="Karthik S N"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-                Karthik S N
-              </h3>
-              <p className="text-blue-600 dark:text-blue-300 font-medium mb-4">
-                CEO
-              </p>
-              <div className="flex space-x-4 mt-2">
-                <a
-                  href="mailto:karthiksn20112004@gmail.com"
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
-                >
-                  <FaEnvelope className="text-2xl" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/karthiknadamritham/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
-                >
-                  <FaLinkedin className="text-2xl" />
-                </a>
-              </div>
-            </div>
-
-            {/* Team Member 2 */}
+          <div className="flex justify-center">
+            {/* Team Member */}
             <div className="bg-white dark:bg-gray-700 p-8 rounded-2xl shadow-xl flex flex-col items-center max-w-sm w-full transform hover:-translate-y-2 transition duration-300">
               <div className="w-60 h-80 bg-gray-300 dark:bg-gray-600 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border-4 border-purple-500">
                 <img
